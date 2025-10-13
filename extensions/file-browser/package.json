@@ -1,0 +1,145 @@
+{
+
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "file-browser",
+  "title": "File Browser",
+  "description": "Browse and manage your Mac's files without leaving Raycast",
+  "icon": "extension-icon.png",
+  "author": "paakjong",
+  "platforms": [
+    "macOS"
+  ],
+  "categories": [
+    "System"
+  ],
+  "license": "MIT",
+  "commands": [
+    {
+      "name": "browse-directory",
+      "title": "Browse Directory",
+      "subtitle": "File Browser",
+      "description": "Browse folders, review rich metadata, and take action from a responsive list or grid.",
+      "mode": "view"
+    }
+  ],
+  "preferences": [
+        {
+          "name": "startDirectory",
+          "type": "directory",
+          "required": false,
+          "title": "Start Directory",
+          "description": "Choose the directory to browse when the command opens."
+        },
+        {
+          "name": "viewMode",
+          "type": "dropdown",
+          "required": false,
+          "title": "Default View Mode",
+          "description": "Set the initial layout for items.",
+          "default": "list",
+          "data": [
+            {
+              "title": "List",
+              "value": "list"
+            },
+            {
+              "title": "Grid",
+              "value": "grid"
+            }
+          ]
+        },
+        {
+          "name": "gridColumns",
+          "type": "dropdown",
+          "required": false,
+          "title": "Grid Columns",
+          "description": "Number of columns to use in grid view.",
+          "default": "6",
+          "data": [
+            {
+              "title": "4",
+              "value": "4"
+            },
+            {
+              "title": "5",
+              "value": "5"
+            },
+            {
+              "title": "6",
+              "value": "6"
+            },
+            {
+              "title": "7",
+              "value": "7"
+            },
+            {
+              "title": "8",
+              "value": "8"
+            }
+          ]
+        },
+        {
+          "name": "sortMode",
+          "type": "dropdown",
+          "required": false,
+          "title": "Default Sort",
+          "description": "Set how items are ordered initially.",
+          "default": "name-asc",
+          "data": [
+            {
+              "title": "Name",
+              "value": "name-asc"
+            },
+            {
+              "title": "Kind",
+              "value": "kind-asc"
+            },
+            {
+              "title": "Date Last Opened",
+              "value": "last-opened-asc"
+            },
+            {
+              "title": "Date Added",
+              "value": "added-asc"
+            },
+            {
+              "title": "Date Modified",
+              "value": "modified-asc"
+            },
+            {
+              "title": "Date Created",
+              "value": "created-asc"
+            },
+            {
+              "title": "Size",
+              "value": "size-asc"
+            },
+            {
+              "title": "Tags",
+              "value": "tags-asc"
+            }
+          ]
+        }
+  ],
+  "dependencies": {
+    "@raycast/api": "^1.103.3",
+    "@raycast/utils": "^1.17.0"
+  },
+  "devDependencies": {
+    "@raycast/eslint-config": "^2.0.4",
+    "@types/node": "22.13.10",
+    "@types/react": "19.0.10",
+    "eslint": "^9.22.0",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.2"
+  },
+  "scripts": {
+    "build": "ray build",
+    "build:native": "cd native && cargo build --release && rm -f ../assets/mditems && cp target/release/mditems ../assets/ && chmod +x ../assets/mditems",
+    "dev": "ray develop",
+    "fix-lint": "ray lint --fix",
+    "lint": "ray lint",
+    "prepublishOnly": "echo \"\\n\\nIt seems like you are trying to publish the Raycast extension to npm.\\n\\nIf you did intend to publish it to npm, remove the \\`prepublishOnly\\` script and rerun \\`npm publish\\` again.\\nIf you wanted to publish it to the Raycast Store instead, use \\`npm run publish\\` instead.\\n\\n\" && exit 1",
+    "publish": "npx @raycast/api@latest publish"
+  }
+}
