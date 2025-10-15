@@ -1,10 +1,11 @@
-import { Color, Icon, type Grid, type List } from "@raycast/api";
+import { Icon, type Grid, type List } from "@raycast/api";
 import type { ContentsItemProps } from "./types";
 import { useContentsView } from "./contents";
-import type { MdItem } from "../../types";
-import { convertDate, formatFileSize } from "../../utils";
+import type { MdItem } from "$lib/types";
+import { convertDate, formatFileSize } from "$lib/utils";
+import { FINDER_TAG_COLORS } from "$lib/constants";
 
-export const ContentsItem = ({ entry, actions }: ContentsItemProps) => {
+export const ContentsItem = ({ entry, actions, enabledAccessories }: ContentsItemProps) => {
   const baseProps = {
     title: entry.name,
     subtitle: entry.kind ?? undefined,
@@ -32,7 +33,7 @@ export const ContentsItem = ({ entry, actions }: ContentsItemProps) => {
         {...baseProps}
         key={entry.path}
         icon={{ fileIcon: entry.path }}
-        accessories={createAccessories(entry)}
+        accessories={createAccessories(entry, enabledAccessories)}
       />
     );
   }
@@ -40,14 +41,25 @@ export const ContentsItem = ({ entry, actions }: ContentsItemProps) => {
   return item;
 };
 
-const createAccessories = (entry: MdItem): List.Item.Accessory[] => {
+const createAccessories = (
+  entry: MdItem,
+  enabled: {
+    showHidden?: boolean;
+    showLastUsed?: boolean;
+    showTags?: boolean;
+    showSize?: boolean;
+    showAttrChanged?: boolean;
+    showCreated?: boolean;
+    showContentChanged?: boolean;
+  },
+): List.Item.Accessory[] => {
   const acc: List.Item.Accessory[] = [];
 
-  if (entry?.fsInvisible) {
+  if (enabled?.showHidden && entry?.fsInvisible) {
     acc.push({ icon: Icon.EyeDisabled, tooltip: "Hidden" });
   }
 
-  if (entry?.lastUsedDate != null) {
+  if (enabled?.showLastUsed && entry?.lastUsedDate != null) {
     const date = convertDate(entry.lastUsedDate);
     acc.push({
       date,
@@ -55,25 +67,25 @@ const createAccessories = (entry: MdItem): List.Item.Accessory[] => {
     });
   }
 
-  if (entry?.userTags?.length > 0) {
+  if (enabled?.showTags && entry?.userTags?.length > 0) {
     entry.userTags.forEach(({ name, colorIndex }) => {
       acc.push({
         tag: {
           value: name,
-          color: FINDER_TAG_COLOR[colorIndex ?? 0],
+          color: FINDER_TAG_COLORS[colorIndex ?? 0],
         },
       });
     });
   }
 
-  if (entry?.size) {
+  if (enabled?.showSize && entry?.size) {
     acc.push({
       text: formatFileSize(entry.size),
       tooltip: `Size: ${formatFileSize(entry.size)}`,
     });
   }
 
-  if (entry?.attributeChangeDate != null) {
+  if (enabled?.showAttrChanged && entry?.attributeChangeDate != null) {
     const date = convertDate(entry.attributeChangeDate);
     acc.push({
       date,
@@ -81,7 +93,7 @@ const createAccessories = (entry: MdItem): List.Item.Accessory[] => {
     });
   }
 
-  if (entry?.fsCreationDate != null) {
+  if (enabled?.showCreated && entry?.fsCreationDate != null) {
     const date = convertDate(entry.fsCreationDate);
     acc.push({
       date,
@@ -89,7 +101,7 @@ const createAccessories = (entry: MdItem): List.Item.Accessory[] => {
     });
   }
 
-  if (entry?.fsContentChangeDate != null) {
+  if (enabled?.showContentChanged && entry?.fsContentChangeDate != null) {
     const date = convertDate(entry.fsContentChangeDate);
     acc.push({
       date,
@@ -99,14 +111,3 @@ const createAccessories = (entry: MdItem): List.Item.Accessory[] => {
 
   return acc;
 };
-
-const FINDER_TAG_COLOR: Color[] = [
-  Color.PrimaryText,
-  Color.SecondaryText,
-  Color.Green,
-  Color.Purple,
-  Color.Blue,
-  Color.Yellow,
-  Color.Red,
-  Color.Orange,
-];

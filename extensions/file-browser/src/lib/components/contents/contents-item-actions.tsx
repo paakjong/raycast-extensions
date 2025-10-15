@@ -1,19 +1,20 @@
 import { Action, ActionPanel, Icon } from "@raycast/api";
 import type { ContentsItemActionPanelProps } from "./types";
 
-export const ContentsItemActionPanel = ({ type, path, target }: ContentsItemActionPanelProps) => {
+export const ContentsItemActionPanel = ({ type, path, target, detail }: ContentsItemActionPanelProps) => {
   return (
     <ActionPanel>
       <ActionPanel.Section>
-        {type === "directory" && <Action.Push target={target} title="Open" icon={Icon.Folder} />}
+        {type === "directory" && target && <Action.Push target={target} title="Open" icon={Icon.Folder} />}
         {type === "file" && <Action.Open title="Open" target={path} icon={Icon.ArrowRightCircle} />}
-        {/* TODO: Add detail view */}
-        {/* <Action.Push
-          target={detail}
-          title="Open Detail"
-          icon={Icon.AppWindow}
-          shortcut={{ modifiers: ["cmd", "shift"], key: "enter" }}
-        /> */}
+        {detail && (
+          <Action.Push
+            target={detail}
+            title="Open Detail"
+            icon={Icon.AppWindow}
+            shortcut={{ modifiers: ["cmd", "shift"], key: "enter" }}
+          />
+        )}
         <Action.OpenWith path={path} shortcut={{ modifiers: ["cmd"], key: "o" }} />
         <Action.ShowInFinder path={path} shortcut={{ modifiers: ["cmd", "alt"], key: "r" }} />
         <Action.ToggleQuickLook />

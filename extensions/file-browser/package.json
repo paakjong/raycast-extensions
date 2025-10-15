@@ -119,6 +119,69 @@
               "value": "tags-asc"
             }
           ]
+        },
+        {
+          "name": "showAttrChanged",
+          "type": "checkbox",
+          "required": false,
+          "title": "Appearance",
+          "label": "Show Attribute Changed",
+          "description": "Show attribute change date as an accessory.",
+          "default": false
+        },
+        {
+          "name": "showContentChanged",
+          "type": "checkbox",
+          "required": false,
+          "title": "",
+          "label": "Show Content Changed",
+          "description": "Show content change date as an accessory.",
+          "default": false
+        },
+        {
+          "name": "showCreated",
+          "type": "checkbox",
+          "required": false,
+          "title": "",
+          "label": "Show Created",
+          "description": "Show creation date as an accessory.",
+          "default": false
+        },
+        {
+          "name": "showSize",
+          "type": "checkbox",
+          "required": false,
+          "title": "",
+          "label": "Show File Size",
+          "description": "Show file size as an accessory.",
+          "default": true
+        },
+        {
+          "name": "showHidden",
+          "type": "checkbox",
+          "required": false,
+          "title": "",
+          "label": "Show Hidden Items",
+          "description": "Display items marked as hidden.",
+          "default": true
+        },
+        {
+          "name": "showLastUsed",
+          "type": "checkbox",
+          "required": false,
+          "title": "",
+          "label": "Show Last Used",
+          "description": "Show last used date in list accessories.",
+          "default": false
+        },
+        {
+          "name": "showTags",
+          "type": "checkbox",
+          "required": false,
+          "title": "",
+          "label": "Show Tags",
+          "description": "Show Finder tags as accessories.",
+          "default": true
         }
   ],
   "dependencies": {

@@ -1,6 +1,6 @@
 import type { List, Grid } from "@raycast/api";
 import type { ReactElement, ReactNode } from "react";
-import type { MdItem, MdItemSortMode } from "../../types";
+import type { MdItem, MdItemSortMode } from "$lib/types";
 
 export type ContentsViewMode = "list" | "grid";
 
@@ -13,6 +13,16 @@ type GridDropdown = GridRoot["Dropdown"];
 
 export type ContentsSortMode = MdItemSortMode;
 
+export type AccessoryFlags = {
+  showHidden?: boolean;
+  showLastUsed?: boolean;
+  showTags?: boolean;
+  showSize?: boolean;
+  showAttrChanged?: boolean;
+  showCreated?: boolean;
+  showContentChanged?: boolean;
+};
+
 export interface ContentDropdownProps {
   view: ContentsViewMode;
   onViewChange: (view: ContentsViewMode) => void;
@@ -20,11 +30,17 @@ export interface ContentDropdownProps {
   onSortChange: (sort: ContentsSortMode) => void;
 }
 
-export type ContentsItemActionPanelProps = { type: MdItem["type"]; path: string; target: ReactNode };
+export type ContentsItemActionPanelProps = {
+  type: MdItem["type"];
+  path: string;
+  target?: ReactNode;
+  detail?: ReactNode;
+};
 
 export interface ContentsItemProps {
   entry: MdItem;
   actions: ReactNode;
+  enabledAccessories: AccessoryFlags;
 }
 
 export interface ContentsProps {

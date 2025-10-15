@@ -1,12 +1,18 @@
 import { Detail } from "@raycast/api";
 import { useState, useEffect, useMemo, useRef } from "react";
+import { Contents, type ContentsSortMode, type ContentsViewMode } from "$lib/components/contents";
+import { useMditems } from "$lib/use-mditems";
+import { sortMdItems } from "$lib/sort-mditems";
+import { ItemDetail } from "../item-detail";
 import type { DirectoryBrowserProps } from "./types";
-import { Contents } from "../../components/contents";
-import type { ContentsSortMode, ContentsViewMode } from "../../components/contents/types";
-import { useMditems } from "../../use-mditems";
-import { sortMdItems } from "../../sort-mditems";
 
-export function DirectoryBrowser({ path, initialView, initialSort, gridColumns }: DirectoryBrowserProps) {
+export function DirectoryBrowser({
+  path,
+  initialView,
+  initialSort,
+  gridColumns,
+  enabledAccessories,
+}: DirectoryBrowserProps) {
   const [view, setView] = useState<ContentsViewMode>(initialView);
   const [sort, setSort] = useState<ContentsSortMode>(initialSort);
   const sortRef = useRef(sort);
@@ -35,13 +41,35 @@ export function DirectoryBrowser({ path, initialView, initialSort, gridColumns }
     >
       {sortedEntries.map((entry) => (
         <Contents.Item
+          key={entry.path}
           entry={entry}
+          enabledAccessories={enabledAccessories}
           actions={
             <Contents.ItemActionPanel
               type={entry.type}
               path={entry.path}
               target={
-                <DirectoryBrowser path={entry.path} initialView={view} initialSort={sort} gridColumns={gridColumns} />
+                <DirectoryBrowser
+                  path={entry.path}
+                  initialView={view}
+                  initialSort={sort}
+                  gridColumns={gridColumns}
+                  enabledAccessories={enabledAccessories}
+                />
+              }
+              detail={
+                <ItemDetail
+                  entry={entry}
+                  directoryTarget={
+                    <DirectoryBrowser
+                      path={entry.path}
+                      initialView={view}
+                      initialSort={sort}
+                      gridColumns={gridColumns}
+                      enabledAccessories={enabledAccessories}
+                    />
+                  }
+                />
               }
             />
           }
